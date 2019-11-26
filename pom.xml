@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.weiller</groupId>
-	<artifactId>mp-example</artifactId>
+	<artifactId>mq-example</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>mp-example</name>
+	<name>mq-example</name>
 	<description>mp-example project for Spring Boot</description>
 
 	<properties>
