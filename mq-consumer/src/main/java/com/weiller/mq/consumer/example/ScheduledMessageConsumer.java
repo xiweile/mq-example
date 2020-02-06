@@ -14,16 +14,17 @@ import java.util.List;
 
      public static void main(String[] args) throws Exception {
          // Instantiate message consumer
-         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("ExampleConsumer");
+         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("test");
+         consumer.setNamesrvAddr("localhost:9876");
          // Subscribe topics
-         consumer.subscribe("TestTopic", "*");
+         consumer.subscribe("TestTopic4", "*");
          // Register message listener
          consumer.registerMessageListener(new MessageListenerConcurrently() {
              @Override
              public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> messages, ConsumeConcurrentlyContext context) {
                  for (MessageExt message : messages) {
                      // Print approximate delay time period
-                     System.out.println("Receive message[msgId=" + message.getMsgId() + "] "
+                     System.out.println("Receive message[msg =" + new String(message.getBody()) + "] "
                              + (System.currentTimeMillis() - message.getStoreTimestamp()) + "ms later");
                  }
                  return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;

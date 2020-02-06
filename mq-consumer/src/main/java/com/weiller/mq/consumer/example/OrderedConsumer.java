@@ -14,10 +14,12 @@ import java.util.concurrent.atomic.AtomicLong;
 public class OrderedConsumer {
     public static void main(String[] args) throws Exception {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("test");
+        // Specify name server addresses.
+        consumer.setNamesrvAddr("localhost:9876");
 
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
 
-        consumer.subscribe("TopicTest", "TagA || TagC || TagD");
+        consumer.subscribe("TopicTest2", "TagA || TagC || TagD");
 
         consumer.registerMessageListener(new MessageListenerOrderly() {
 
@@ -27,7 +29,7 @@ public class OrderedConsumer {
                                                        ConsumeOrderlyContext context) {
                 context.setAutoCommit(false);
                 for (MessageExt msg : msgs) {
-                    System.out.println(msg + ",内容：" + new String(msg.getBody()));
+                    System.out.printf("%s Receive New Messages %s: %s %n", Thread.currentThread().getName(),msg.getTags(),new String(msg.getBody()));
                 }
                // System.out.printf(Thread.currentThread().getName() + " Receive New Messages: " + msgs + "%n");
                 this.consumeTimes.incrementAndGet();
@@ -35,9 +37,9 @@ public class OrderedConsumer {
                 if ((this.consumeTimes.get() % 2) == 0) {
                     return ConsumeOrderlyStatus.SUCCESS;
                 } else if ((this.consumeTimes.get() % 3) == 0) {
-                    return ConsumeOrderlyStatus.ROLLBACK;
+                    return ConsumeOrderlyStatus.SUCCESS;
                 } else if ((this.consumeTimes.get() % 4) == 0) {
-                    return ConsumeOrderlyStatus.COMMIT;
+                    return ConsumeOrderlyStatus.SUCCESS;
                 } else if ((this.consumeTimes.get() % 5) == 0) {
                     context.setSuspendCurrentQueueTimeMillis(3000);
                     return ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;

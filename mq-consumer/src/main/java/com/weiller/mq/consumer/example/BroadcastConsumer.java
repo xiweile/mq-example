@@ -15,14 +15,14 @@ import java.util.List;
  */
 public class BroadcastConsumer {
     public static void main(String[] args) throws Exception {
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("example_group_name");
-
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("test");
+        consumer.setNamesrvAddr("127.0.0.1:9876");
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
 
         //set to broadcast mode
         consumer.setMessageModel(MessageModel.BROADCASTING);
 
-        consumer.subscribe("TopicTest", "TagA || TagC || TagD");
+        consumer.subscribe("TopicTest3", "TagA || TagC || TagD");
 
         consumer.registerMessageListener(new MessageListenerConcurrently() {
 
@@ -31,7 +31,7 @@ public class BroadcastConsumer {
                                                             ConsumeConcurrentlyContext context) {
                 //System.out.printf(Thread.currentThread().getName() + " Receive New Messages: " + msgs + "%n");
                 for (MessageExt msg : msgs) {
-                    System.out.println(msg + ",内容：" + new String(msg.getBody()));
+                    System.out.println(Thread.currentThread().getName()+"接收到内容：" + new String(msg.getBody()));
                 }
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }

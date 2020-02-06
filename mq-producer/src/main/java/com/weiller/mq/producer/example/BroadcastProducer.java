@@ -10,15 +10,15 @@ import org.apache.rocketmq.remoting.common.RemotingHelper;
  */
 public class BroadcastProducer {
     public static void main(String[] args) throws Exception {
-        DefaultMQProducer producer = new DefaultMQProducer("ProducerGroupName");
+        DefaultMQProducer producer = new DefaultMQProducer("test");
         producer.setNamesrvAddr("127.0.0.1:9876");
         producer.start();
 
         for (int i = 0; i < 100; i++){
-            Message msg = new Message("TopicTest",
+            Message msg = new Message("TopicTest3",
                 "TagA",
                 "OrderID188",
-                "Hello world".getBytes(RemotingHelper.DEFAULT_CHARSET));
+                    ("Hello world "+i).getBytes(RemotingHelper.DEFAULT_CHARSET));
             SendResult sendResult = producer.send(msg);
             System.out.printf("%s%n", sendResult);
         }
