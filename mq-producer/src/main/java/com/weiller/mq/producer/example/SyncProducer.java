@@ -12,13 +12,13 @@ public class SyncProducer {
     public static void main(String[] args) throws Exception {
         //实例化一个生产者组name
         DefaultMQProducer producer = new
-            DefaultMQProducer("test");
+            DefaultMQProducer("default222");
         producer.setNamesrvAddr("127.0.0.1:9876");
         //运行这个实例
         producer.start();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             //创建一个消息实例，指定topic，tag和消息体。
-            Message msg = new Message("TopicTest" /* Topic */,
+            Message msg = new Message("TEST" /* Topic */,
                 "TagA" /* Tag */,
                 ("Hello RocketMQ " +
                     i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
